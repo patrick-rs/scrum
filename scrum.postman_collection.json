@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "6bc3d2fe-faa5-4abb-875f-da8deae3b166",
+		"name": "scrum",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18441650"
+	},
+	"item": [
+		{
+			"name": "Post Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response must return the company id\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson).to.have.property(\"id\")",
+							"    pm.environment.set('CompanyId', bodyJson[\"id\"])",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"CompanyName\") === \"\") {",
+							"    pm.environment.set(\"CompanyName\", \"POSTMAN_TEST_COMPANY\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"CreateCompany\",\n    \"parameters\": {\n        \"companyName\":\"{{CompanyName}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/company",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"pm.test(\"Response must return the correct company name\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson['name']).to.eq(pm.environment.get(\"CompanyName\"))",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"GetCompanyFromId\",\n    \"parameters\": {\n        \"companyId\":{{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/company",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

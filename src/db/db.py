@@ -27,4 +27,15 @@ class DB:
         cur.execute(query, (company_name,))
         data = cur.fetchone()
         cur.close()
+        self.conn.commit()
+        return json.dumps(data, default=str)
+
+    def get_company_from_id(self, company_id):
+        query = "select * from company where id = %s"
+
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cur.execute(query, (company_id,))
+        data = cur.fetchone()
+        cur.close()
+        self.conn.commit()
         return json.dumps(data, default=str)

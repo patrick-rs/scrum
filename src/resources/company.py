@@ -9,7 +9,22 @@ class Company:
         self.db = db
 
     def get(self):
-        return "get request"
+        schema = Schema(
+            {
+                "action": Or("GetCompanyFromId"),
+                "parameters": {"companyId": int},
+            }
+        )
+        req_body = request.json
+
+        if not ValidateDictionary(schema, req_body):
+            return ("Invalid request body", 400)
+
+        company_id = req_body["parameters"]["companyId"]
+        print("id", company_id)
+        match req_body["action"]:
+            case "GetCompanyFromId":
+                return self.db.get_company_from_id(company_id)
 
     def post(self):
         schema = Schema(
