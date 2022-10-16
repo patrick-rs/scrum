@@ -5,7 +5,6 @@ class Sprint:
         self.db = db
     
     def get(self):
-        print("HERE")
         request_json = request.json
         match request_json["action"]:
             case "GetAllSprintsForCompany":

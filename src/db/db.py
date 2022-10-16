@@ -4,7 +4,7 @@ import psycopg2.extras
 
 class DB:
     def __init__(self):
-        conn = psycopg2.connect( host="localhost", database="agile", user="agile_admin", password="password")
+        conn = psycopg2.connect( host="localhost", database="scrum", user="scrum_admin", password="password")
 
         self.conn = conn
 
