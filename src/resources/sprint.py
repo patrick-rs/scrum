@@ -32,7 +32,7 @@ class Sprint:
             case "GetSprintFromId":
                 res = self.db.get_sprint_from_id(company_id, sprint_id)
                 # if res is none then no rows have that company id and sprint id, so return 404
-                if res is None:
+                if res == "null":
                     return make_response("Sprint not found", 404)
                 return res
 

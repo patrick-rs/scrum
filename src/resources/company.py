@@ -27,7 +27,7 @@ class Company:
             case "GetCompanyFromId":
                 res = self.db.get_company_from_id(company_id)
                 # if res is none then no rows have that company id, so return 404
-                if res is None:
+                if res == "null":
                     return make_response("Company not found", 404)
                 return res
 
