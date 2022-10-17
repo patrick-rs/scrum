@@ -32,6 +32,31 @@ class Sprint:
             case "GetSprintFromId":
                 return self.db.get_sprint_from_id(company_id, sprint_id)
 
+    def delete(self):
+        schema = Schema(
+            {
+                "action": Or("DeleteSprintFromId"),
+                "parameters": {
+                    "sprintId": int,
+                    "companyId": int,
+                },
+            }
+        )
+
+        req_body = request.json
+
+        try:
+            schema.validate(req_body)
+        except SchemaError as error:
+            return make_response(str(error), 400)
+
+        sprint_id = req_body["parameters"]["sprintId"]
+        company_id = req_body["parameters"]["companyId"]
+
+        match req_body["action"]:
+            case "DeleteSprintFromId":
+                return self.db.delete_sprint_from_id(company_id, sprint_id)
+
     def post(self):
         schema = Schema(
             {

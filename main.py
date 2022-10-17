@@ -14,8 +14,12 @@ sprint = Sprint(db)
 
 app.add_url_rule("/company", "get_company", view_func=company.get, methods=["GET"])
 app.add_url_rule("/company", "post_company", view_func=company.post, methods=["POST"])
+
 app.add_url_rule("/sprint", "post_sprint", view_func=sprint.post, methods=["POST"])
 app.add_url_rule("/sprint", "get_sprint", view_func=sprint.get, methods=["GET"])
+app.add_url_rule(
+    "/sprint", "delete_sprint", view_func=sprint.delete, methods=["DELETE"]
+)
 
 if __name__ == "__main__":
     app.run(debug=True, port=4040)

@@ -27,6 +27,21 @@ class DB:
         self.conn.commit()
         return json.dumps(data, default=str)
 
+    def delete_sprint_from_id(self, company_id, sprint_id):
+        query = "delete from sprint where company_id = %s and id = %s"
+
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cur.execute(
+            query,
+            (
+                company_id,
+                sprint_id,
+            ),
+        )
+        cur.close()
+        self.conn.commit()
+        return "Successfully deleted sprint"
+
     def create_sprint(self, company_id, sprint_name):
         query = "insert into sprint (name, company_id) values (%s, %s) returning *"
 
