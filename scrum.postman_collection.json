@@ -20,7 +20,7 @@
 							"pm.test(\"Response must return the company id\", () => {",
 							"    bodyJson = pm.response.json()",
 							"    pm.expect(bodyJson).to.have.property(\"id\")",
-							"    pm.environment.set('CompanyId', bodyJson[\"id\"])",
+							"    pm.collectionVariables.set('CompanyId', bodyJson[\"id\"])",
 							"})"
 						],
 						"type": "text/javascript"
@@ -74,7 +74,7 @@
 							"})",
 							"pm.test(\"Response must return the correct company name\", () => {",
 							"    bodyJson = pm.response.json()",
-							"    pm.expect(bodyJson['name']).to.eq(pm.environment.get(\"CompanyName\"))",
+							"    pm.expect(bodyJson['name']).to.eq(pm.collectionVariables.get(\"CompanyName\"))",
 							"})"
 						],
 						"type": "text/javascript"
@@ -122,7 +122,7 @@
 							"pm.test(\"Response must return the sprint id\", () => {",
 							"    bodyJson = pm.response.json()",
 							"    pm.expect(bodyJson).to.have.property(\"id\")",
-							"    pm.environment.set('SprintId', bodyJson[\"id\"])",
+							"    pm.collectionVariables.set('SprintId', bodyJson[\"id\"])",
 							"})"
 						],
 						"type": "text/javascript"
@@ -132,8 +132,8 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"if (!pm.environment.get(\"SprintName\")) {",
-							"    pm.environment.set(\"SprintName\", \"POSTMAN_TEST_SPRINT\")",
+							"if (!pm.collectionVariables.get(\"SprintName\")) {",
+							"    pm.collectionVariables.set(\"SprintName\", \"PostmanTestSprint\")",
 							"}"
 						],
 						"type": "text/javascript"
@@ -177,7 +177,7 @@
 							"",
 							"pm.test(\"Response must return the sprint name\", () => {",
 							"    bodyJson = pm.response.json()",
-							"    pm.expect(bodyJson['sprintName']).to.eq(pm.environment.get(\"SprintName\"))",
+							"    pm.expect(bodyJson['name']).to.eq(pm.collectionVariables.get(\"SprintName\"))",
 							"})"
 						],
 						"type": "text/javascript"
@@ -219,6 +219,151 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Delete Sprint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"DeleteSprintFromId\",\n    \"parameters\": {\n        \"sprintId\":{{SprintId}},\n        \"companyId\": {{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/sprint",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"sprint"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Deleted Sprint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 404\", () => {",
+							"    pm.response.to.have.status(404)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"GetSprintFromId\",\n    \"parameters\": {\n        \"sprintId\":{{SprintId}},\n        \"companyId\": {{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/sprint",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"sprint"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://127.0.0.1:4040",
+			"type": "string"
+		},
+		{
+			"key": "CompanyName",
+			"value": "PostmanTestCompany",
+			"type": "string"
+		},
+		{
+			"key": "SprintName",
+			"value": "PostmanTestSprint",
+			"type": "string"
+		},
+		{
+			"key": "CompanyId",
+			"value": ""
+		},
+		{
+			"key": "SprintId",
+			"value": ""
 		}
 	]
 }
