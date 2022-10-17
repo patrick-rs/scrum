@@ -107,6 +107,118 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Post Sprint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response must return the sprint id\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson).to.have.property(\"id\")",
+							"    pm.environment.set('SprintId', bodyJson[\"id\"])",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.environment.get(\"SprintName\")) {",
+							"    pm.environment.set(\"SprintName\", \"POSTMAN_TEST_SPRINT\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"CreateSprint\",\n    \"parameters\": {\n        \"sprintName\":\"{{SprintName}}\",\n        \"companyId\": {{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/sprint",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"sprint"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sprint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response must return the sprint name\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson['sprintName']).to.eq(pm.environment.get(\"SprintName\"))",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"GetSprintFromId\",\n    \"parameters\": {\n        \"sprintId\":{{SprintId}},\n        \"companyId\": {{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/sprint",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"sprint"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
