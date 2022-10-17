@@ -25,7 +25,11 @@ class Company:
 
         match req_body["action"]:
             case "GetCompanyFromId":
-                return self.db.get_company_from_id(company_id)
+                res = self.db.get_company_from_id(company_id)
+                # if res is none then no rows have that company id, so return 404
+                if res is None:
+                    return make_response("Company not found", 404)
+                return res
 
     def post(self):
         schema = Schema(

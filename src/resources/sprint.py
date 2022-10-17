@@ -30,7 +30,11 @@ class Sprint:
 
         match req_body["action"]:
             case "GetSprintFromId":
-                return self.db.get_sprint_from_id(company_id, sprint_id)
+                res = self.db.get_sprint_from_id(company_id, sprint_id)
+                # if res is none then no rows have that company id and sprint id, so return 404
+                if res is None:
+                    return make_response("Sprint not found", 404)
+                return res
 
     def delete(self):
         schema = Schema(
