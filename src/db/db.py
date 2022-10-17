@@ -69,5 +69,4 @@ class DB:
         cur.execute(query, (company_id,))
         data = cur.fetchone()
         cur.close()
-        self.conn.commit()
         return json.dumps(data, default=str)
