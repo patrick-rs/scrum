@@ -1,12 +1,22 @@
+import os
 import psycopg2
 import json
 import psycopg2.extras
 
 
 class DB:
+    db_env_var_name = "POSTGRES_SCRUM_ADMIN_PASSWORD"
+
     def __init__(self):
+        password = "password"
+        if self.db_env_var_name in os.environ:
+            password = os.getenv(self.db_env_var_name)
+
         conn = psycopg2.connect(
-            host="localhost", database="scrum", user="scrum_admin", password="password"
+            host="localhost",
+            database="scrum",
+            user="scrum_admin",
+            password=password,
         )
 
         self.conn = conn
