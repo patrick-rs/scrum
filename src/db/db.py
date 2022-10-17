@@ -11,13 +11,30 @@ class DB:
 
         self.conn = conn
 
-    def get_sprints_for_company(self, company_id):
-        query = "select * from sprint where company_id = %s"
+    def get_sprint_from_id(self, company_id, sprint_id):
+        query = "select * from sprint where company_id = %s and id = %s"
 
         cur = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        cur.execute(query, (company_id,))
-        data = cur.fetchall()
+        cur.execute(
+            query,
+            (
+                company_id,
+                sprint_id,
+            ),
+        )
+        data = cur.fetchone()
         cur.close()
+        self.conn.commit()
+        return json.dumps(data, default=str)
+
+    def create_sprint(self, company_id, sprint_name):
+        query = "insert into sprint (name, company_id) values (%s, %s) returning *"
+
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cur.execute(query, (sprint_name, company_id))
+        data = cur.fetchone()
+        cur.close()
+        self.conn.commit()
         return json.dumps(data, default=str)
 
     def create_company(self, company_name):

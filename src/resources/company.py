@@ -1,7 +1,6 @@
 from ast import And
-from flask import request
-from schema import Schema, Or, And
-from src.validator import ValidateDictionary
+from flask import request, make_response
+from schema import Schema, Or, And, SchemaError
 
 
 class Company:
@@ -17,11 +16,13 @@ class Company:
         )
         req_body = request.json
 
-        if not ValidateDictionary(schema, req_body):
-            return ("Invalid request body", 400)
+        try:
+            schema.validate(req_body)
+        except SchemaError as error:
+            return make_response(str(error), 400)
 
         company_id = req_body["parameters"]["companyId"]
-        print("id", company_id)
+
         match req_body["action"]:
             case "GetCompanyFromId":
                 return self.db.get_company_from_id(company_id)
@@ -35,12 +36,13 @@ class Company:
         )
         req_body = request.json
 
-        if not ValidateDictionary(schema, req_body):
-            return ("Invalid request body", 400)
+        try:
+            schema.validate(req_body)
+        except SchemaError as error:
+            return make_response(str(error), 400)
 
         company_name = req_body["parameters"]["companyName"]
+
         match req_body["action"]:
             case "CreateCompany":
                 return self.db.create_company(company_name)
-
-        return "post request"
