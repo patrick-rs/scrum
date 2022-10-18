@@ -1,10 +1,12 @@
 from flask import request
 from schema import Schema, Or, And, SchemaError
 from flask import make_response
+from src.db import DB
+from typing import Type
 
 
 class Sprint:
-    def __init__(self, db):
+    def __init__(self, db: Type[DB]):
         self.db = db
 
     def get(self):

@@ -3,7 +3,7 @@ import sys
 from flask import Flask
 from src.resources.company import Company
 from src.resources.sprint import Sprint
-from src.db.db import DB
+from src.db import DB
 
 app = Flask(__name__)
 

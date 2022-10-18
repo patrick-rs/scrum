@@ -1,10 +1,12 @@
 from ast import And
 from flask import request, make_response
 from schema import Schema, Or, And, SchemaError
+from src.db import DB
+from typing import Type
 
 
 class Company:
-    def __init__(self, db):
+    def __init__(self, db: Type[DB]):
         self.db = db
 
     def get(self):
