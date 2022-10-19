@@ -33,3 +33,4 @@ class DB:
 
     from .company import create_company, get_company_from_id
     from .sprint import create_sprint, delete_sprint_from_id, get_sprint_from_id
+    from .task import create_task, delete_task_from_id, get_task_from_id
