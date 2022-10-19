@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6bc3d2fe-faa5-4abb-875f-da8deae3b166",
+		"_postman_id": "851414d7-b45d-4389-af73-2ee542bdd852",
 		"name": "scrum",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18441650"
@@ -221,6 +221,330 @@
 			"response": []
 		},
 		{
+			"name": "Create Task 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response must return the task id\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson).to.have.property(\"id\")",
+							"    pm.collectionVariables.set('Task1Id', bodyJson[\"id\"])",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"Task1Name\")) {",
+							"    pm.collectionVariables.set(\"Task1Name\", \"Chore\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"CreateTask\",\n    \"parameters\": {\n        \"companyId\": {{CompanyId}},\n        \"taskName\": \"{{Task1Name}}\",\n        \"taskDescription\":\"Go for a walk\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/task",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response must return the task id\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson).to.have.property(\"id\")",
+							"    pm.collectionVariables.set('Task2Id', bodyJson[\"id\"])",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"Task2Name\")) {",
+							"    pm.collectionVariables.set(\"Task2Name\", \"Exercise\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"CreateTask\",\n    \"parameters\": {\n        \"sprintId\":{{SprintId}},\n        \"companyId\": {{CompanyId}},\n        \"taskName\": \"{{Task2Name}}\",\n        \"taskDescription\":\"Take out the trash\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/task",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"",
+							"pm.test(\"Response must return the task name\", () => {",
+							"    bodyJson = pm.response.json()",
+							"    pm.expect(bodyJson['name']).to.eq(pm.collectionVariables.get(\"Task1Name\"))",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"Task2Name\")) {",
+							"    pm.collectionVariables.set(\"Task2Name\", \"Exercise\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"GetTaskFromId\",\n    \"parameters\": {\n        \"taskId\":{{Task1Id}},\n        \"companyId\":{{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/task",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"Task2Name\")) {",
+							"    pm.collectionVariables.set(\"Task2Name\", \"Exercise\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"DeleteTaskFromId\",\n    \"parameters\": {\n        \"taskId\":{{Task1Id}},\n        \"companyId\":{{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/task",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"Task2Name\")) {",
+							"    pm.collectionVariables.set(\"Task2Name\", \"Exercise\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"DeleteTaskFromId\",\n    \"parameters\": {\n        \"taskId\":{{Task2Id}},\n        \"companyId\":{{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/task",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Deleted Task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response status code must be 404\", () => {",
+							"    pm.response.to.have.status(404)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"Task2Name\")) {",
+							"    pm.collectionVariables.set(\"Task2Name\", \"Exercise\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"GetTaskFromId\",\n    \"parameters\": {\n        \"taskId\":{{Task1Id}},\n        \"companyId\":{{CompanyId}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/task",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Sprint",
 			"event": [
 				{
@@ -363,6 +687,22 @@
 		},
 		{
 			"key": "SprintId",
+			"value": ""
+		},
+		{
+			"key": "Task1Name",
+			"value": ""
+		},
+		{
+			"key": "Task2Name",
+			"value": ""
+		},
+		{
+			"key": "Task1Id",
+			"value": ""
+		},
+		{
+			"key": "Task2Id",
 			"value": ""
 		}
 	]
